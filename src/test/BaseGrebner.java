@@ -77,8 +77,6 @@ public class BaseGrebner {
 		assertEquals( resultadoEsperado, resultado );	
 	}
 	
-	
-	
 	@Test
 	public void BaseMinimal1() {
 		int numVariables = 2;

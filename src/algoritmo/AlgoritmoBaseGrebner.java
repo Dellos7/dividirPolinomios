@@ -71,7 +71,7 @@ public class AlgoritmoBaseGrebner {
 		// Calculamos el Spolinomio
 		Termino parte1 = gama.divideTerminos( p1.LT() );
 		Termino parte2 = gama.divideTerminos( p2.LT() );
-		
+		System.out.println( "PARTE1: " + parte1 + "; P1: " + p1 );
 		Polinomio polParte1 = AlgoritmoDivisor.multiplicacionTerminoPolinomio( parte1, p1 );
 		System.out.println( "POLPART1:" + polParte1 );
 		Polinomio polParte2 = AlgoritmoDivisor.multiplicacionTerminoPolinomio( parte2, p2 );

@@ -1,6 +1,8 @@
 package datos;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,7 +41,7 @@ public class Polinomio {
 		});
 	}
 	
-	private void ordenarTerminosG() { // Utilizamos el órden graduadolexicográfico
+	private void ordenarTerminosa() { // Utilizamos el órden graduadolexicográfico
 		Collections.sort( this.terminos, new Comparator<Termino>() {
 			@Override
 			public int compare( Termino t1, Termino t2 ) {
@@ -96,7 +98,7 @@ public class Polinomio {
 	public boolean polinomioCero() {
 		for( int i = 0; i < this.terminos.size(); i++ ) {
 			Termino termino = terminos.get(i);
-			if( !termino.getConstante().equals( new BigDecimal( 0.0 ) ) ) {
+			if( !termino.getConstante().equals( new BigDecimal( 0.0).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) ) ) {
 				return false;
 			}
 		}
@@ -167,7 +169,7 @@ public class Polinomio {
 			Polinomio polDividido = new Polinomio();
 			for( int j = 0; j < p.getTerminos().size(); j++ ){
 				Termino t = p.getTerminos().get(j);
-				Termino nuevoTermino = new Termino( t.getNumVariables(), t.getConstante().divide( constante ), t.getVectorExponentes());
+				Termino nuevoTermino = new Termino( t.getNumVariables(), t.getConstante().divide( constante, new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) ), t.getVectorExponentes());
 				polDividido.addTermino(nuevoTermino);
 			}
 			

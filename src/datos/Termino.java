@@ -1,6 +1,7 @@
 package datos;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -13,18 +14,18 @@ public class Termino {
 	public Termino() { 
 		this.numVariables = 3;
 		this.vectorExponentes = new int[ numVariables ];
-		this.constante = new BigDecimal( 0.0 );
+		this.constante = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 	}
 	
 	public Termino( int numVariables ) { 
 		this.numVariables = numVariables;
-		this.constante = new BigDecimal( 0.0 );
+		this.constante = new BigDecimal( 0.0).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		this.vectorExponentes = new int[ numVariables ];
 	}
 	
 	public Termino( int numVariables, double constante, int[] vectorExponentes ) {
 		this.numVariables = numVariables;
-		this.constante = new BigDecimal( constante );
+		this.constante = new BigDecimal( constante).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		this.vectorExponentes = vectorExponentes;
 	}
 	
@@ -36,7 +37,7 @@ public class Termino {
 	
 	public Termino( int numVariables, double c1Numerador, double c2Denominador , int[] vectorExponentes ) {
 		this.numVariables = numVariables;
-		this.constante = new BigDecimal( c1Numerador ).divide( new BigDecimal(c2Denominador) , 5, RoundingMode.DOWN );
+		this.constante = new BigDecimal( c1Numerador).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ).divide( new BigDecimal(c2Denominador).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ), Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		this.vectorExponentes = vectorExponentes;
 	}
 
@@ -45,7 +46,7 @@ public class Termino {
 	}
 
 	public void setConstante(double constante) {
-		this.constante = new BigDecimal( constante );
+		this.constante = new BigDecimal( constante ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 	}
 	
 	public void setConstante( BigDecimal constante ) {
@@ -68,14 +69,6 @@ public class Termino {
 		this.numVariables = numVariables;
 	}
 	
-	double roundThreeDecimals(double d) { 
-		String sValue = (String) String.format("%.2f", d);
-		String [] s = sValue.split( "," );
-		sValue = s[0] + "." + s[1];
-		Double newValue = Double.parseDouble(sValue);
-		return newValue.doubleValue();
-	} 
-	
 // División de dos términos. Sólo lo llamamos cuando sabemos que la división se puede hacer
 	public Termino divideTerminos( Termino t2 ) {
 		
@@ -92,7 +85,7 @@ public class Termino {
 		System.out.println( "RES2: " + constante );*/
 		System.out.println( "c1: " + this.getConstante() );
 		System.out.println( "c2: " + t2.getConstante() );
-		BigDecimal constante = this.getConstante().divide( t2.getConstante(), 5, RoundingMode.DOWN );
+		BigDecimal constante = this.getConstante().divide( t2.getConstante(), Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		System.out.println( constante );
 		
 		int[] resta = new int[ this.getNumVariables() ];
@@ -129,8 +122,10 @@ public class Termino {
 			return false;
 		}
 		
-		BigDecimal bd1 = new BigDecimal( this.constante.doubleValue() ).setScale( 5 , RoundingMode.DOWN );
-		BigDecimal bd2 = new BigDecimal( otroTermino.getConstante().doubleValue() ).setScale( 5 , RoundingMode.DOWN );
+		//BigDecimal bd1 = new BigDecimal( this.constante.doubleValue() ).setScale( 5 , RoundingMode.DOWN );
+		//BigDecimal bd2 = new BigDecimal( otroTermino.getConstante().doubleValue() ).setScale( 5 , RoundingMode.DOWN );
+		BigDecimal bd1 = new BigDecimal( this.constante.doubleValue() ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+		BigDecimal bd2 = new BigDecimal( otroTermino.getConstante().doubleValue() ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		
 		/*if( !this.constante.equals(otroTermino.getConstante()) ) {
 			return false;

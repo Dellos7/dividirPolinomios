@@ -14,7 +14,7 @@ import datos.Termino;
 public class BaseGrebner2 {
 	
 	@Test
-	public void BaseGrebner1() {
+	public void baseGrebner2() {
 		int numVariables = 4;
 		Termino t1 = new Termino( numVariables, 3.0, new int[]{ 1, 0, 0, 0 } );
 		Termino t2 = new Termino( numVariables, -6.0, new int[]{ 0, 1, 0, 0 } );

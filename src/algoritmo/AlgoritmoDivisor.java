@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import datos.Configuracion;
 import datos.Polinomio;
 import datos.ResultadoDivision;
 import datos.Termino;
@@ -104,8 +105,7 @@ public class AlgoritmoDivisor {
 		List<Termino> listaTerminosDelPolinomioResultante = new ArrayList<>();
 		for( int i = 0; i < p.getTerminos().size(); i++ ) {
 			Termino terminoPolinomio = p.getTerminos().get(i);
-			BigDecimal nuevaConstante = t.getConstante().multiply( terminoPolinomio.getConstante() );
-			nuevaConstante = nuevaConstante.setScale( 5 ,  RoundingMode.DOWN );
+			BigDecimal nuevaConstante = t.getConstante().multiply( terminoPolinomio.getConstante(), new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) );
 			System.out.println( "C1 = " + t.getConstante() + " * C2 = " + terminoPolinomio.getConstante() + ";BD NUEVA CONSTANTE: " + nuevaConstante );
 			int[] sumaExponentes = new int[ terminoPolinomio.getNumVariables() ];
 			for( int j = 0; j < terminoPolinomio.getNumVariables(); j++ ){
@@ -137,8 +137,10 @@ public class AlgoritmoDivisor {
 				if( tp1.equalsSinConstantes( tp2 ) ) {
 					//double constante = (double) (tp1.getConstante() - tp2.getConstante() );
 					//constante = Math.floor( constante*100 )/100;
-					BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante() );
-					BigDecimal bd0 = new BigDecimal( "0.00000" );
+					//BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante(), new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) );
+					BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante() ).setScale(Configuracion.NUM_DECIMALES , RoundingMode.DOWN);
+					//BigDecimal bd0 = new BigDecimal( "0.00000" );
+					BigDecimal bd0 = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 					if( !constante.equals( bd0 ) ) { //Se añade la resta si no se anulan; si se anulan no se añade
 						Termino t = new Termino( tp2.getNumVariables(), constante, tp2.getVectorExponentes() );	
 						listaTerminosDelPolinomioResultante.add( t );
@@ -197,12 +199,12 @@ public class AlgoritmoDivisor {
 	
 	private static Termino sumarTerminos( List<Termino> terminosASumar ) { //La lista de términos a sumar contendrá los mismos monomios con diferente constante. Sólo se deben sumar las constantes.
 		//double sumaConstantes = 0.0;
-		BigDecimal sumaConstantes = new BigDecimal( 0.0 );
+		BigDecimal sumaConstantes = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		int numVariables = terminosASumar.get(0).getNumVariables();
 		int[] vectorExponentes = terminosASumar.get(0).getVectorExponentes();
 		for( Termino termino: terminosASumar ) {
 			//sumaConstantes += termino.getConstante();
-			sumaConstantes = sumaConstantes.add( termino.getConstante() );
+			sumaConstantes = sumaConstantes.add( termino.getConstante() ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
 		}
 		Termino terminoResultado = new Termino( numVariables, sumaConstantes, vectorExponentes );
 		return terminoResultado;
