@@ -1,7 +1,6 @@
 package algoritmo;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import datos.Configuracion;
 import datos.Polinomio;
 import datos.ResultadoDivision;
 import datos.Termino;
+import fraction.BigFraction;
 
 public class AlgoritmoDivisor {
 
@@ -22,29 +22,21 @@ public class AlgoritmoDivisor {
 		Polinomio resto = new Polinomio();
 		
 		while( !p.polinomioCero() ) {
-			System.out.println("aaa");
 			int i = 0;
 			boolean divisionOcurred = false;
 			
 			while( i < s && !divisionOcurred ) {
-				System.out.println( "LT: " + p.LT() );
-				System.out.println( "LT2: " + polinomiosDivisores.get(i).LT() );
-				System.out.println( "es divisible: " + esDivisible( p.LT(), polinomiosDivisores.get(i).LT() ));
 				if( esDivisible( p.LT(), polinomiosDivisores.get(i).LT() ) ){
 					
 					if( polinomiosCociente[i] == null) {
 						polinomiosCociente[i] = new Polinomio();
 					}
 					Termino division = p.LT().divideTerminos( polinomiosDivisores.get(i).LT() );
-					System.out.println( "div: "+division );
 					polinomiosCociente[i].addTermino( division );
 					
 					Polinomio divisionMultiplicaPolinomioDivisor = multiplicacionTerminoPolinomio( division, polinomiosDivisores.get(i));
 					
-					System.out.println( "P RESTA 1: " + p );
-					System.out.println( "P RESTA 2: " + divisionMultiplicaPolinomioDivisor );
 					p = restaPolinomios( p ,  divisionMultiplicaPolinomioDivisor );
-					System.out.println( "RESTA: " + p );
 					
 					if( p.polinomioCero() ){
 						Termino r = new Termino( polinomiosDivisores.get(i).LT().getNumVariables(), 0, new int[]{ 0, 0, 0, 0 });
@@ -63,11 +55,8 @@ public class AlgoritmoDivisor {
 				/*Polinomio polinomioTerminoLiderP = new Polinomio();
 				polinomioTerminoLiderP.addTermino( p.LT() );
 				p = restaPolinomios( p , polinomioTerminoLiderP );*/
-				System.out.println( "P ANTES DE RESTA: " + p );
 				p.getTerminos().remove( p.LT() ); 
-				System.out.println( "P DESP DE RESTA: " + p );
 			}
-			System.out.println( "POL ITER: " + p );
 		}
 		
 		//Generamos un objeto de la clase ResultadoDivision que almacene una lista con los polinomios
@@ -105,8 +94,8 @@ public class AlgoritmoDivisor {
 		List<Termino> listaTerminosDelPolinomioResultante = new ArrayList<>();
 		for( int i = 0; i < p.getTerminos().size(); i++ ) {
 			Termino terminoPolinomio = p.getTerminos().get(i);
-			BigDecimal nuevaConstante = t.getConstante().multiply( terminoPolinomio.getConstante(), new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) );
-			System.out.println( "C1 = " + t.getConstante() + " * C2 = " + terminoPolinomio.getConstante() + ";BD NUEVA CONSTANTE: " + nuevaConstante );
+			//BigDecimal nuevaConstante = t.getConstante().multiply( terminoPolinomio.getConstante(), new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) );
+			BigFraction nuevaConstante = BigFraction.product( t.getConstante() , terminoPolinomio.getConstante() );
 			int[] sumaExponentes = new int[ terminoPolinomio.getNumVariables() ];
 			for( int j = 0; j < terminoPolinomio.getNumVariables(); j++ ){
 				sumaExponentes[j] = terminoPolinomio.getVectorExponentes()[j] + t.getVectorExponentes()[j]; 
@@ -135,12 +124,12 @@ public class AlgoritmoDivisor {
 				//y se añadirá al polinomio resultante la resta o no se añadirá si se anulan
 				//if( tp1.equals( tp2 ) ) {
 				if( tp1.equalsSinConstantes( tp2 ) ) {
-					//double constante = (double) (tp1.getConstante() - tp2.getConstante() );
-					//constante = Math.floor( constante*100 )/100;
-					//BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante(), new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) );
-					BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante() ).setScale(Configuracion.NUM_DECIMALES , RoundingMode.DOWN);
+					//BigDecimal constante = tp1.getConstante().subtract( tp2.getConstante() ).setScale(Configuracion.NUM_DECIMALES , RoundingMode.DOWN);
+					//BigFraction constante = BigFraction.remainder( tp1.getConstante() , tp2.getConstante() );
+					BigFraction constante = BigFraction.difference( tp1.getConstante() , tp2.getConstante() );
 					//BigDecimal bd0 = new BigDecimal( "0.00000" );
-					BigDecimal bd0 = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+					//BigDecimal bd0 = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+					BigFraction bd0 = BigFraction.valueOf( 0 );
 					if( !constante.equals( bd0 ) ) { //Se añade la resta si no se anulan; si se anulan no se añade
 						Termino t = new Termino( tp2.getNumVariables(), constante, tp2.getVectorExponentes() );	
 						listaTerminosDelPolinomioResultante.add( t );
@@ -162,9 +151,8 @@ public class AlgoritmoDivisor {
 		for( int i =  0; i < p2.getTerminos().size(); i++ ) {
 			if( !mapaTerminosAnyadidos.get( i ) ) {
 				Termino t = p2.getTerminos().get( i );
-				//double constante = t.getConstante();
-				//constante = -constante;
-				BigDecimal constante = t.getConstante().negate();
+				//BigDecimal constante = t.getConstante().negate();
+				BigFraction constante = t.getConstante().negate();
 				t.setConstante( constante );
 				listaTerminosDelPolinomioResultante.add( t );
 			}
@@ -199,12 +187,14 @@ public class AlgoritmoDivisor {
 	
 	private static Termino sumarTerminos( List<Termino> terminosASumar ) { //La lista de términos a sumar contendrá los mismos monomios con diferente constante. Sólo se deben sumar las constantes.
 		//double sumaConstantes = 0.0;
-		BigDecimal sumaConstantes = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+		//BigDecimal sumaConstantes = new BigDecimal( 0.0 ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+		BigFraction sumaConstantes = BigFraction.valueOf( 0 );
 		int numVariables = terminosASumar.get(0).getNumVariables();
 		int[] vectorExponentes = terminosASumar.get(0).getVectorExponentes();
 		for( Termino termino: terminosASumar ) {
 			//sumaConstantes += termino.getConstante();
-			sumaConstantes = sumaConstantes.add( termino.getConstante() ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+			//sumaConstantes = sumaConstantes.add( termino.getConstante() ).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN );
+			sumaConstantes = BigFraction.sum( sumaConstantes , termino.getConstante() );
 		}
 		Termino terminoResultado = new Termino( numVariables, sumaConstantes, vectorExponentes );
 		return terminoResultado;

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import algoritmo.AlgoritmoDivisor;
+import fraction.BigFraction;
 
 public class Polinomio {
 	
@@ -41,7 +42,7 @@ public class Polinomio {
 		});
 	}
 	
-	private void ordenarTerminosa() { // Utilizamos el órden graduadolexicográfico
+	private void ordenarTerminosG() { // Utilizamos el órden graduadolexicográfico
 		Collections.sort( this.terminos, new Comparator<Termino>() {
 			@Override
 			public int compare( Termino t1, Termino t2 ) {
@@ -98,7 +99,7 @@ public class Polinomio {
 	public boolean polinomioCero() {
 		for( int i = 0; i < this.terminos.size(); i++ ) {
 			Termino termino = terminos.get(i);
-			if( !termino.getConstante().equals( new BigDecimal( 0.0).setScale( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) ) ) {
+			if( !termino.getConstante().equals( BigFraction.valueOf( 0 ) ) ) {
 				return false;
 			}
 		}
@@ -164,12 +165,13 @@ public class Polinomio {
 		List<Polinomio> nuevaLista = new ArrayList<>();
 		for( int i = 0; i < listaPolinomios.size(); i++ ){
 			Polinomio p = listaPolinomios.get(i);
-			BigDecimal constante = p.LT().getConstante();
+			BigFraction constante = p.LT().getConstante();
 			
 			Polinomio polDividido = new Polinomio();
 			for( int j = 0; j < p.getTerminos().size(); j++ ){
 				Termino t = p.getTerminos().get(j);
-				Termino nuevoTermino = new Termino( t.getNumVariables(), t.getConstante().divide( constante, new MathContext( Configuracion.NUM_DECIMALES , RoundingMode.DOWN ) ), t.getVectorExponentes());
+				BigFraction division = BigFraction.valueOf( t.getConstante(), constante );
+				Termino nuevoTermino = new Termino( t.getNumVariables(), division, t.getVectorExponentes());
 				polDividido.addTermino(nuevoTermino);
 			}
 			

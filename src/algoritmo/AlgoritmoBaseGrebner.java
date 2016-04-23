@@ -23,16 +23,9 @@ public class AlgoritmoBaseGrebner {
 			for( int i = 0; i < polinomiosDelIdeal.size() && !terminarBucleExterno; i++ ){
 				boolean terminarBucleInterno = false;
 				for( int j = i+1; j < polinomiosDelIdeal.size() && !terminarBucleInterno; j++){	
-					System.out.println(i);
-					System.out.println(j);
 					Polinomio Spol = calculaSpolinomio(polinomiosDelIdeal.get(i), polinomiosDelIdeal.get(j));
-					System.out.println("Spol" + Spol);
-					System.out.println(AlgoritmoDivisor.dividirPolinomios( Spol, polinomiosDelIdeal ).getResto().polinomioCero());
-					System.out.println("aslk"+AlgoritmoDivisor.dividirPolinomios( Spol, polinomiosDelIdeal ).getResto());
 					if( !(AlgoritmoDivisor.dividirPolinomios( Spol, polinomiosDelIdeal ).getResto().polinomioCero() )){
-						System.out.println("---"+AlgoritmoDivisor.dividirPolinomios( Spol, polinomiosDelIdeal ).getResto());
 						polinomiosDelIdeal.add( Spol );
-						System.out.println(polinomiosDelIdeal.toString());
 						terminar = false;
 						terminarBucleInterno = true;
 						terminarBucleExterno = true;
@@ -71,11 +64,8 @@ public class AlgoritmoBaseGrebner {
 		// Calculamos el Spolinomio
 		Termino parte1 = gama.divideTerminos( p1.LT() );
 		Termino parte2 = gama.divideTerminos( p2.LT() );
-		System.out.println( "PARTE1: " + parte1 + "; P1: " + p1 );
 		Polinomio polParte1 = AlgoritmoDivisor.multiplicacionTerminoPolinomio( parte1, p1 );
-		System.out.println( "POLPART1:" + polParte1 );
 		Polinomio polParte2 = AlgoritmoDivisor.multiplicacionTerminoPolinomio( parte2, p2 );
-		System.out.println( "POLPART2: " + polParte2 );
 		
 		Polinomio Spol = AlgoritmoDivisor.restaPolinomios(polParte1, polParte2);
 		return Spol;

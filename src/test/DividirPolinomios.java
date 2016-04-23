@@ -24,13 +24,11 @@ public class DividirPolinomios {
 		Termino t11 = new Termino( numVariables, 1, new int[]{ 2, 1 } );
 		Termino t12 = new Termino( numVariables, 1, new int[]{ 1, 2 } );
 		Termino t13 = new Termino( numVariables, 1, new int[]{ 0, 2 } );
-		System.out.println( t11 );
 				
 		Polinomio polinomioDividendo = new Polinomio();
 		polinomioDividendo.addTermino( t11 );
 		polinomioDividendo.addTermino( t12 );
 		polinomioDividendo.addTermino( t13 );
-		System.out.println( polinomioDividendo );
 		
 		//FIN Polinomio dividendo
 		
@@ -90,8 +88,6 @@ public class DividirPolinomios {
 		
 		//Hacemos la división
 		ResultadoDivision resultado = AlgoritmoDivisor.dividirPolinomios( polinomioDividendo , polinomiosDivisores );
-		System.out.println(resultado.getResto());
-		System.out.println( Arrays.toString(resultado.getResultado() ));
 		//Comprobamos que el resultado de la división sea el esperado
 		assertArrayEquals( polinomiosResultadoEsperados, resultado.getResultado() );
 		//Comprobamos que el resto de la división sea el esperado
@@ -190,7 +186,7 @@ public class DividirPolinomios {
 		int numVariables = 4;
 		
 		//Polinomio dividendo
-		Termino t11 = new Termino( numVariables, 1.0, 3.0, new int[]{ 0, 0, 1, 0 } );
+		Termino t11 = new Termino( numVariables, 1, 3, new int[]{ 0, 0, 1, 0 } );
 		Termino t12 = new Termino( numVariables, 1, new int[]{ 0, 0, 0, 1 } );
 					
 		Polinomio polinomioDividendo = new Polinomio();
@@ -199,42 +195,42 @@ public class DividirPolinomios {
 		
 		//FIN Polinomio dividendo
 		
-		Termino t1 = new Termino( numVariables, 3.0, new int[]{ 1, 0, 0, 0 } );
-		Termino t2 = new Termino( numVariables, -6.0, new int[]{ 0, 1, 0, 0 } );
-		Termino t3 = new Termino( numVariables, -2.0, new int[]{ 0, 0, 1, 0 } );
+		Termino t1 = new Termino( numVariables, 3, new int[]{ 1, 0, 0, 0 } );
+		Termino t2 = new Termino( numVariables, -6, new int[]{ 0, 1, 0, 0 } );
+		Termino t3 = new Termino( numVariables, -2, new int[]{ 0, 0, 1, 0 } );
 
 		Polinomio p1 = new Polinomio();
 		p1.addTermino( t1 );
 		p1.addTermino( t2 );
 		p1.addTermino( t3 );
 		
-		Termino q1 = new Termino( numVariables, 2.0, new int[]{ 1, 0, 0, 0 } );
-		Termino q2 = new Termino( numVariables, -4.0, new int[]{ 0, 1, 0, 0 } );
-		Termino q3 = new Termino( numVariables, 4.0, new int[]{ 0, 0, 0, 1 } );
+		Termino q1 = new Termino( numVariables, 2, new int[]{ 1, 0, 0, 0 } );
+		Termino q2 = new Termino( numVariables, -4, new int[]{ 0, 1, 0, 0 } );
+		Termino q3 = new Termino( numVariables, 4, new int[]{ 0, 0, 0, 1 } );
 		Polinomio p2 = new Polinomio();
 		p2.addTermino( q1 );
 		p2.addTermino( q2 );
 		p2.addTermino( q3 );
 		
-		Termino r1 = new Termino( numVariables, 1.0, new int[]{ 1, 0, 0, 0 } );
-		Termino r2 = new Termino( numVariables, -2.0, new int[]{ 0, 1, 0, 0 } );
-		Termino r3 = new Termino( numVariables, -1.0, new int[]{ 0, 0, 1, 0 } );
-		Termino r4 = new Termino( numVariables, -1.0, new int[]{ 0, 0, 0, 1 } );
+		Termino r1 = new Termino( numVariables, 1, new int[]{ 1, 0, 0, 0 } );
+		Termino r2 = new Termino( numVariables, -2, new int[]{ 0, 1, 0, 0 } );
+		Termino r3 = new Termino( numVariables, -1, new int[]{ 0, 0, 1, 0 } );
+		Termino r4 = new Termino( numVariables, -1, new int[]{ 0, 0, 0, 1 } );
 		Polinomio p3 = new Polinomio();
 		p3.addTermino( r1 );
 		p3.addTermino( r2 );
 		p3.addTermino( r3 );
 		p3.addTermino( r4 );
 		
-		Termino j1 = new Termino( numVariables, -2.0, 3.0, new int[]{ 0, 0, 1, 0 } );
-		Termino j2 = new Termino( numVariables, -2.0, new int[]{ 0, 0, 0, 1 } );
+		Termino j1 = new Termino( numVariables, -2, 3, new int[]{ 0, 0, 1, 0 } );
+		Termino j2 = new Termino( numVariables, -2, new int[]{ 0, 0, 0, 1 } );
 		Polinomio p4 = new Polinomio();
 		p4.addTermino( j1 );
 		p4.addTermino( j2 );
 		
 		
-		Termino k1 = new Termino( numVariables, 1.0, 3.0, new int[]{ 0, 0, 1, 0 } );
-		Termino k2 = new Termino( numVariables, 1.0, new int[]{ 0, 0, 0, 1 } );
+		Termino k1 = new Termino( numVariables, 1, 3, new int[]{ 0, 0, 1, 0 } );
+		Termino k2 = new Termino( numVariables, 1, new int[]{ 0, 0, 0, 1 } );
 		Polinomio p5 = new Polinomio();
 		p5.addTermino( k1 );
 		p5.addTermino( k2 );
@@ -249,7 +245,7 @@ public class DividirPolinomios {
 			
 		//Resultado esperado
 		
-		Termino t1res1 = new Termino( numVariables, -0.5, new int[]{ 0,0,0, 0 } );
+		Termino t1res1 = new Termino( numVariables, -1, 2, new int[]{ 0,0,0, 0 } );
 		Polinomio res1 = new Polinomio();
 		res1.addTermino( t1res1 );
 		
